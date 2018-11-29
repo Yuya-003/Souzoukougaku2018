@@ -4,7 +4,7 @@
 class Console{
 public:
 
-    static bool ClearScreen(int interval=20000);
-    static bool SetCursorPos(int x,int y);
-    static bool MoveCursorPos(int x,int y);
+    static void ClearScreen(int interval=20000);
+    static void SetCursorPos(int x,int y);
+    static void MoveCursorPos(int x,int y);
 };
