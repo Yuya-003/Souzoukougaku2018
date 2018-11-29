@@ -30,7 +30,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin CACHE PATH "Output directory 
 set(LIBRARY_OUTPUT_PATH    ${CMAKE_BINARY_DIR}/lib CACHE PATH "Output directory for libraries")
 
 #ライブラリ追加
-file(GLOB BLACKLIB_SOURCES BlackLib/v3_0/*.cpp BlackLib/v3_0/*.h BlackLib/v3_0/*.hpp BlackLib/v3_0/Black*/*.cpp BlackLib/v3_0/Black*/*.h)
+file(GLOB BLACKLIB_SOURCES BlackLib/v3_0/BlackCore.cpp BlackLib/v3_0/*.h BlackLib/v3_0/Black*/*.cpp BlackLib/v3_0/Black*/*.h)
 add_library(BlackLib ${BLACKLIB_SOURCES})
 
 #インクルードディレクトリ追加
