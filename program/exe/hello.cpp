@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include <Console.h>
-#include <Timer.hpp>
+#include <util/Console.h>
+#include <util/Timer.hpp>
 
 int main(){
 	std::string str = "HELLO  WORLD";
