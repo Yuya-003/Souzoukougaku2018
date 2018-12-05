@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
 
-project(procon27 CXX)
+project(Souzoukougaku2018 CXX)
 
 
 # in-sourceビルドの禁止
@@ -30,12 +30,12 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin CACHE PATH "Output directory 
 set(LIBRARY_OUTPUT_PATH    ${CMAKE_BINARY_DIR}/lib CACHE PATH "Output directory for libraries")
 
 #ライブラリ追加
-file(GLOB BLACKLIB_SOURCES BlackLib/v3_0/BlackCore.cpp BlackLib/v3_0/*.h BlackLib/v3_0/Black*/*.cpp BlackLib/v3_0/Black*/*.h)
+file(GLOB BLACKLIB_SOURCES BlackLib/BlackCore.cpp BlackLib/*.h BlackLib/Black*/*.cpp BlackLib/Black*/*.h)
 add_library(BlackLib ${BLACKLIB_SOURCES})
 
 #インクルードディレクトリ追加
-target_include_directories(BlackLib PUBLIC BlackLib/v3_0)
-target_include_directories(BlackLib PRIVATE BlackLib/v3_0)
+target_include_directories(BlackLib PUBLIC BlackLib)
+target_include_directories(BlackLib PRIVATE BlackLib)
 
 # サブディレクトリ追加
 add_subdirectory(modules)
