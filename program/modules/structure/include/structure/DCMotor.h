@@ -1,19 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include <BlackGPIO/BlackGPIO.h>
 #include <BlackPWM/BlackPWM.h>
 
 class DCMotor{
-private:
-    BlackLib::BlackGPIO in1, in2;
-    BlackLib::BlackPWM st;
-
-    int period = 10000000; //単位:ns
-    float duty = 100.0; //パーセント
-    Mode mode = stop;
-
 public:
-
     enum Mode{
         forward, backward, stop
     };
@@ -23,4 +16,12 @@ public:
     void changePeriod(int ns);
     void changeDuty(float percentage);
     void changeMode(Mode mode);
-}
+
+private:
+    std::shared_ptr<BlackLib::BlackGPIO> in1, in2;
+    std::shared_ptr<BlackLib::BlackPWM> st;
+
+    int period = 10000000; //単位:ns
+    float duty = 100.0; //パーセント
+    Mode mode = stop;
+};
