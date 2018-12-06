@@ -18,7 +18,7 @@ message(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
 # C++コンパイル設定
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")        # C++14を有効化
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")        # C++14を有効化
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")        # コンパイル時最適化を有効(O0:なし O1:ちょっと O2:結構 O3:すごい Ofast:ワーオ!)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")     # enable all warnings
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-compare") # disable some warnings
