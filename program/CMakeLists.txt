@@ -29,14 +29,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")     # enable all warning
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin CACHE PATH "Output directory for executables")
 set(LIBRARY_OUTPUT_PATH    ${CMAKE_BINARY_DIR}/lib CACHE PATH "Output directory for libraries")
 
-#ライブラリ追加
-file(GLOB BLACKLIB_SOURCES BlackLib/BlackCore.cpp BlackLib/*.h BlackLib/Black*/*.cpp BlackLib/Black*/*.h)
-add_library(BlackLib ${BLACKLIB_SOURCES})
-
-#インクルードディレクトリ追加
-target_include_directories(BlackLib PUBLIC BlackLib)
-target_include_directories(BlackLib PRIVATE BlackLib)
-
 # サブディレクトリ追加
 add_subdirectory(modules)
 add_subdirectory(exe)
