@@ -1,4 +1,7 @@
-﻿#include <stdio.h>
+﻿//own headers
+
+//c headers
+#include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -8,6 +11,14 @@
 #include <sys/mman.h>
 #include <poll.h>
 #include <termios.h>
+
+//c++ headers
+#include <iostream>
+
+//library headers
+
+//project headers
+#include <util/Console.h>
 
 //各自の使用するボードで変更
 /**************************/
