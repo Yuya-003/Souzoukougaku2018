@@ -16,3 +16,4 @@ target_include_directories(structure PRIVATE include/structure)
 
 # ライブラリをリンク
 target_link_libraries(structure util)
+target_link_libraries(structure BlackLib)
