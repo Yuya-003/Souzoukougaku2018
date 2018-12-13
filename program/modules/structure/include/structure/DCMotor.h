@@ -21,7 +21,7 @@ public:
     int getPeriod(){return period;}
     float getDuty(){return duty;}
     Mode getMode(){return mode;}
-    string getModeStr();
+    std::string getModeStr();
 
 private:
     std::shared_ptr<BlackLib::BlackGPIO> in1, in2;

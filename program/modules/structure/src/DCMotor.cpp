@@ -48,7 +48,7 @@ void DCMotor::changeMode(Mode mode)
     }
 }
 
-string DCMotor::getModeStr()
+std::string DCMotor::getModeStr()
 {
     if(mode == Mode::forward){return "Forward";}
     if(mode == Mode::backward){return "Backward";}
