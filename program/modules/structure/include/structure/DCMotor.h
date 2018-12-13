@@ -15,6 +15,7 @@ public:
     DCMotor(BlackLib::gpioName in1, BlackLib::gpioName in2, BlackLib::pwmName st);
 
     void changePeriod(int ns);
+    void changeOffset(float percentage);
     void changeDuty(float percentage);
     void changeMode(Mode mode);
 
@@ -28,6 +29,7 @@ private:
     std::shared_ptr<BlackLib::BlackPWM> st;
 
     int period = 10000000; //単位:ns
+    float offset = 100.0; //パーセント
     float duty = 100.0; //パーセント
     Mode mode = stop;
 };

@@ -22,9 +22,15 @@ void DCMotor::changePeriod(int ns)
     st->setPeriodTime(ns);
 }
 
+void DCMotor::changeOffset(float percentage)
+{
+    this->offset = percentage;
+    changeDuty(this->duty);
+}
+
 void DCMotor::changeDuty(float percentage)
 {
-    st->setDutyPercent(percentage);
+    st->setDutyPercent(percentage / this->offset);
 }
 
 void DCMotor::changeMode(Mode mode)
