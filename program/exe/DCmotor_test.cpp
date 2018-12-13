@@ -1,313 +1,204 @@
 ﻿//own headers
 
 //c headers
-#include <stdio.h>
 #include <unistd.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <dirent.h>
 #include <fcntl.h>
-#include <sys/mman.h>
-#include <poll.h>
 #include <termios.h>
 
 //c++ headers
 #include <iostream>
+#include <iomanip>
 
 //library headers
 
 //project headers
 #include <util/Console.h>
+#include <util/Timer.hpp>
+#include <structure/DCMotor.h>
 
-//各自の使用するボードで変更
-/**************************/
-#define OCP_NUM 3 //ocp.▲の▲に該当する番号
-#define PWM_PERIOD 10000000
-#define BONE_CAPEMGR_NUM 9 //bone_capemgr.●の●に該当
-/**************************/
-
-//各自の接続に応じて変更
-/**************************/
-char PIN_PWM[2][7]={{"P9_14"},{"P9_22"}}; //PWM有効化後の番号
-int pwm_pin_num[2]={15,17}; //PWMに使用するのBBBピン番号
-int motor_gpio_num[2][2]={{61,60},{65,46}}; //モータで使用するGPIO番号
-/*************************/
-
-void gpio_export(int n);	//gpioの有効化関数
-void gpio_unexport(int n); //gpioの有効化解除の関数
-int gpio_open(int n, char *file, int flag);	//gpioの設定ファイルを開く関数
-void init_pwm(int motor_num); //PWM初期化関数 motor_num=0もしくは1
-void run_pwm(int motor_num,int duty,int drive_mode); //モータ用出力関数 motor_num=0もしくは1/drive_mode 0:停止，1:正転，-1:逆転
-void close_pwm(int motor_num); //PWM終了関数
 int kbhit(void); //キー入力関数
 
-/*********************************/
-//init_pwm(モータ番号)を呼び出して，初期化の設定を行う，モータ番号（0～接続個数-1）
-//run_pwm(int motor_num,int duty,int drive_mode)を呼びだして動かす．motor_num：モータ番号/duty：整数値/drive_mode：停止，正転，逆転
-//close_pwm(モータ番号)を呼び出して，終了の処理を実施
-/*********************************/
+int main()
+{
+    constexpr int MaxPeriod = 10000000;
+    constexpr BlackLib::gpioName MotorGpioName[2][2] = { {BlackLib::GPIO_61, BlackLib::GPIO_60},
+    									  			   	 {BlackLib::GPIO_65, BlackLib::GPIO_46} };
+    constexpr BlackLib::pwmName MotorPwmName[2] = {BlackLib::P9_14, BlackLib::P9_22};
 
+    DCMotor rightMotor(MotorGpioName[0][0], MotorGpioName[0][1], MotorPwmName[0]);
+    DCMotor leftMotor (MotorGpioName[1][0], MotorGpioName[1][1], MotorPwmName[1]);
 
-//このプログラムは，モータ0番が常に停止している状態
-//モータ1番に関しては何もしていない
-int main(){
-	int i;
-	int does_loop = 1;
-	int mode_l, mode_r;
-	mode_l = mode_r = 0;
+    //画面表示
+    Console::ClearScreen(1);
+    Console::SetCursorPos(0, 0);
+    std::cout << "============================================================================\n"
+                 "=                                                                          =\n"
+                 "=                            Motor Test Program                            =\n"
+                 "=                                                                          =\n"
+                 "============================================================================\n"
+                 "= < L >                                                                    =\n"
+                 "=    Mode   :                                                              =\n"
+                 "=    Period :                                                              =\n"
+                 "=    Rate   :《                                                  》        =\n"
+                 "=                                                                          =\n"
+                 "============================================================================\n"
+                 "= < R >                                                                    =\n"
+                 "=    Mode   :                                                              =\n"
+                 "=    Period :                                                              =\n"
+                 "=    Rate   :《                                                  》        =\n"
+                 "=                                                                          =\n"
+                 "============================================================================\n"
+                 "= < key description >                                                      =\n"
+                 "=   (L)                               |   (R)                              =\n"
+                 "=     's' : mode 'Forward'            |     'j' : mode 'Forward'           =\n"
+                 "=     'd' : mode 'Stop'               |     'k' : mode 'Stop'              =\n"
+                 "=     'f' : mode 'Backward            |     'l' : mode 'Backward           =\n"
+                 "=     '@' : period increase           |     '[' : periodincrease           =\n"
+                 "=     ':' : period decrease           |     ']' : period decrease          =\n"
+                 "=     't' : duty rate increase        |     'y' : duty rate increase       =\n"
+                 "=     'g' : duty rate decrease        |     'h' : duty rate decrease       =\n"
+                 "============================================================================\n";
+    //《███    》
+    
+    bool doesLoop = true;
+    while(true){
 
-	init_pwm(0);
-	init_pwm(1);
-	
-	
-	while(does_loop){
-		
-		if(kbhit()){
-			switch(getchar()){
-				case 'q':
-					does_loop = 0;
-					break;
+        Console::SetCursorPos(0, 28);
+        
+        if(kbhit()){
+            switch(getchar()){
+                case 's': //(L) status 'Forward'
+                    leftMotor.changeMode(DCMotor::forward);
+                    break;
 
-				case 'w':
-					mode_l = 1;
-					break;
+                case 'd': //(L) status 'Stop'
+                    leftMotor.changeMode(DCMotor::stop);
+                    break;
 
-				case 's':
-					mode_l = 0;
-					break;
+                case 'f': //(L) status 'Backward 
+                    leftMotor.changeMode(DCMotor::backward);
+                    break;
 
-				case 'x':
-					mode_l = -1;
-					break;
+                case '@': //(L) period increase
+                    if(leftMotor.getPeriod() < MaxPeriod){
+                        leftMotor.changePeriod(leftMotor.getPeriod() + 1);
+                    }
+                    break;
 
-				case 'e':
-					mode_r = 1;
-					break;
-				
-				case 'd':
-					mode_r = 0;
-					break;
-				
-				case 'c':
-					mode_r = -1;
-					break;
+                case ':': //(L) period decrease
+                    if(leftMotor.getPeriod() > 0){
+                        leftMotor.changePeriod(leftMotor.getPeriod() - 1);
+                    }
+                    break;
 
-				default:
-					break;
-					
-			}
-		}
+                case 't': //(L) duty rate increase
+                    if(leftMotor.getDuty() < 100.0){
+                        leftMotor.changeDuty(leftMotor.getDuty() + 1.0);
+                    }
+                    break;
 
-		run_pwm(0,PWM_PERIOD,mode_l);
-		run_pwm(1,PWM_PERIOD,mode_r);
+                case 'g': //(L) duty rate decrease
+                    if(leftMotor.getDuty() > 0){
+                        leftMotor.changeDuty(leftMotor.getDuty() - 1.0);
+                    }
+                    break;
 
-		//画面表示
-		printf("run\n");
+                case 'j': //(R) status 'Forward'
+                    rightMotor.changeMode(DCMotor::forward);
+                    break;
 
-		//キー入力関数
-/*		if(kbhit()) {
-			if(getchar()=='q')	//「q」で終了
-				break;
-		}
-*/		
-	}
+                case 'k': //(R) status 'Stop'
+                    rightMotor.changeMode(DCMotor::stop);
+                    break;
 
-	run_pwm(0,0,0);
-	run_pwm(1,0,0);
-	close_pwm(0);
-	close_pwm(1);
+                case 'l': //(R) status 'Backward 
+                    rightMotor.changeMode(DCMotor::backward);
+                    break;
 
-	return 0;
-}
+                case '[': //(R) period increase
+                    if(rightMotor.getPeriod() < MaxPeriod){
+                        rightMotor.changePeriod(rightMotor.getPeriod() + 1);
+                    }
+                    break;
 
-//PWM初期化関数
-void init_pwm(int motor_num){
-	int i,fd;
-	char path[60],path3[60],path4[60];
-	FILE *fp;
-	for(i=0;i<2;i++){
-		gpio_export(motor_gpio_num[motor_num][i]);
-		
-		fd=gpio_open(motor_gpio_num[motor_num][i], "direction", O_WRONLY);
-		write(fd, "out", 3);
-		close(fd);
+                case ']': //(R) period decrease
+                    if(rightMotor.getPeriod() > 0){
+                        rightMotor.changePeriod(rightMotor.getPeriod() - 1);
+                    }
+                    break;
 
-		sprintf(path3, "/sys/class/gpio/gpio%d/value", motor_gpio_num[motor_num][i]);
-		fp = fopen(path3, "w");
-		fprintf(fp, "%d", 0);
-		fclose(fp);
-	}
+                case 'y': //(R) duty rate increase
+                    if(rightMotor.getDuty() < 100.0){
+                        rightMotor.changeDuty(rightMotor.getDuty() + 1.0);
+                    }
+                    break;
 
-	/*PWM機能の有効化*/
-	
-	sprintf(path4, "/sys/devices/bone_capemgr.%d/slots", BONE_CAPEMGR_NUM);
-	fp = fopen(path4,"w");
-	fprintf(fp, "am33xx_pwm");
-	fclose(fp);
+                case 'h': //(R) duty rate decrease
+                    if(rightMotor.getDuty() > 0){
+                        rightMotor.changeDuty(rightMotor.getDuty() - 1.0);
+                    }
+                    break;
 
-	/*ピンの設定（PIN_PWM指定のピン）*/
-	sprintf(path, "bone_pwm_%s",PIN_PWM[motor_num]);
-	sprintf(path4, "/sys/devices/bone_capemgr.%d/slots", BONE_CAPEMGR_NUM);
-	fp = fopen(path4,"w");
-	fprintf(fp, path);
-	fclose(fp);
+                case 'q':
+                    doesLoop = false;
+                    break;
 
-	/*安全のため，PWM出力の停止*/
-	sprintf(path, "/sys/devices/ocp.%d/pwm_test_%s.%d/run",OCP_NUM, PIN_PWM[motor_num], pwm_pin_num[motor_num]);
-	fp = fopen(path, "wb");
-	fprintf(fp, "%d", 0);
-	fclose(fp);
+                default:
+                    break;
+                    
+            }
+        }
 
-	/*PWM周期の設定*/
-	sprintf(path, "/sys/devices/ocp.%d/pwm_test_%s.%d/period",OCP_NUM, PIN_PWM[motor_num], pwm_pin_num[motor_num]);
-	fp = fopen(path, "wb");
-	fprintf(fp, "%d", PWM_PERIOD);
-	fclose(fp);
+        if(!doesLoop) break;
 
-	/*PWM極性の設定*/
-	sprintf(path, "/sys/devices/ocp.%d/pwm_test_%s.%d/polarity",OCP_NUM, PIN_PWM[motor_num], pwm_pin_num[motor_num]);
-	fp=fopen(path, "wb");
-	fprintf(fp, "%d", 0);
-	fclose(fp);
+        //画面表示
+        //L
+        Console::SetCursorPos(15, 7);
+        std::cout << leftMotor.getModeStr() << "          ";
+        Console::MoveCursorPos(-(leftMotor.getModeStr().size() + 10), 1);
+        std::cout << leftMotor.getPeriod();
+        Console::MoveCursorPos(-7, 1);
+        for(int i = 1; i <= 50; i++){
+            if(leftMotor.getDuty()/(i*2) >= 1){
+                std::cout << "█";
+            }
+            else{
+                std::cout << " ";
+            }
+        }
+        Console::MoveCursorPos(2, 0);
+        std::cout << std::setw(3) << leftMotor.getDuty() << "%";
 
-	/*PWM　ON状態時間の初期化*/
-	sprintf(path, "/sys/devices/ocp.%d/pwm_test_%s.%d/duty",OCP_NUM, PIN_PWM[motor_num], pwm_pin_num[motor_num]);
-	fp=fopen(path, "wb");
-	fprintf(fp, "%d", 0);
-	fclose(fp);
+        //R
+        Console::MoveCursorPos(-57, 4);
+        std::cout << rightMotor.getModeStr() << "          ";
+        Console::MoveCursorPos(-(rightMotor.getModeStr().size() + 10), 1);
+        std::cout << rightMotor.getPeriod();
+        Console::MoveCursorPos(-7, 1);
+        for(int i = 1; i <= 50; i++){
+            if(rightMotor.getDuty()/(i*2) >= 1){
+                std::cout << "█";
+            }
+            else{
+                std::cout << " ";
+            }
+        }
+        Console::MoveCursorPos(2, 0);
+        std::cout << std::setw(3) << rightMotor.getDuty() << "%";
 
-	/*PWM出力の開始*/
-	sprintf(path, "/sys/devices/ocp.%d/pwm_test_%s.%d/run",OCP_NUM, PIN_PWM[motor_num], pwm_pin_num[motor_num]);
-	fp=fopen(path, "wb");
-	fprintf(fp, "%d", 1);
-	fclose(fp);
+    }
 
-}
+    
 
-//PWM終了関数
-void close_pwm(int motor_num){
-	FILE *fp;
-	char path[60];
-	int i;
-	
-	/*PWM　duty0出力*/
-	sprintf(path, "/sys/devices/ocp.%d/pwm_test_%s.%d/duty",OCP_NUM, PIN_PWM[motor_num], pwm_pin_num[motor_num]);
-	fp=fopen(path, "wb");
-	fprintf(fp, "%d", 0);
-	fclose(fp);
-	
-	/*PWM出力の停止*/
-	sprintf(path, "/sys/devices/ocp.%d/pwm_test_%s.%d/run",OCP_NUM, PIN_PWM[motor_num], pwm_pin_num[motor_num]);
-	fp=fopen(path, "wb");
-	fprintf(fp, "%d", 0);
-	fclose(fp);
-
-	//GPIOの解放
-	for(i=0;i<2;i++){
-		gpio_unexport(motor_gpio_num[motor_num][i]);
-	}
-}
-
-//モータ用出力関数
-void run_pwm(int motor_num,int duty,int drive_mode){
-	int i;
-	char path[60],path3[60];
-	FILE *fp;
-
-	//一時停止
-	if(drive_mode==0){
-		for(i=0;i<2;i++){
-			sprintf(path3, "/sys/class/gpio/gpio%d/value", motor_gpio_num[motor_num][i]);
-			fp = fopen(path3, "w");
-			fprintf(fp, "%d", 1);
-			fclose(fp);
-		}
-	}
-	
-	//モータ正転
-	else if(drive_mode==1){
-		for(i=0;i<2;i++){
-			sprintf(path3, "/sys/class/gpio/gpio%d/value", motor_gpio_num[motor_num][i]);
-			fp = fopen(path3, "w");
-			if(i==0){
-				fprintf(fp, "%d", 1);
-				fclose(fp);
-			}
-			else{
-				fprintf(fp, "%d", 0);
-				fclose(fp);
-			}
-		}
-
-	}
-
-	//モータ逆転
-	else if(drive_mode==-1){
-		for(i=0;i<2;i++){
-			sprintf(path3, "/sys/class/gpio/gpio%d/value", motor_gpio_num[motor_num][i]);
-			fp = fopen(path3, "w");
-			if(i==0){
-				fprintf(fp, "%d", 0);
-				fclose(fp);
-			}
-			else{
-				fprintf(fp, "%d", 1);
-				fclose(fp);
-			}
-		}
-	}
-
-	//入力したdutyでPWM信号を出力
-	sprintf(path, "/sys/devices/ocp.%d/pwm_test_%s.%d/duty",OCP_NUM, PIN_PWM[motor_num], pwm_pin_num[motor_num]);
-	fp=fopen(path, "wb");
-	fprintf(fp, "%d", duty);
-	fclose(fp);
-	usleep(200);
-}
-
-
-//gpioの有効化関数
-void gpio_export(int n){
-	int fd;
-	char buf[40];
-
-	sprintf(buf, "%d", n);
-
-	fd = open("/sys/class/gpio/export", O_WRONLY);
-	write(fd, buf, strlen(buf));
-	close(fd);
-}
-
-//gpioの有効化解除の関数
-void gpio_unexport(int n){
-	int fd;
-	char buf[40];
-
-	sprintf(buf, "%d", n);
-
-	fd = open("/sys/class/gpio/unexport", O_WRONLY);
-	write(fd, buf, strlen(buf));
-	close(fd);
-}
-
-//gpioの設定ファイルを開く関数
-int gpio_open(int n, char *file, int flag){
-	int fd;
-	char buf[40];
-
-	sprintf(buf, "/sys/class/gpio/gpio%d/%s", n, file);
-
-	fd = open(buf, flag);
-	return fd;
+    return 0;
 }
 
 int kbhit(void){
-	struct termios oldt, newt;
-	int ch;
-	int oldf;
+    struct termios oldt, newt;
+    int ch;
+    int oldf;
 
-	tcgetattr(STDIN_FILENO, &oldt);
+    tcgetattr(STDIN_FILENO, &oldt);
     newt = oldt;
     newt.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);

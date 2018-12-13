@@ -6,5 +6,6 @@ message(STATUS "  hello")
 
 add_executable(DCMotorTest DCmotor_test.cpp)
 target_link_libraries(DCMotorTest util)
+target_link_libraries(DCMotorTest structure)
 target_link_libraries(DCMotorTest BlackLib)
 message(STATUS "  DCMotorTest")
