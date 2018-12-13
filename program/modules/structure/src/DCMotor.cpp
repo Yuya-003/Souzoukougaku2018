@@ -19,6 +19,7 @@ DCMotor::DCMotor(BlackLib::gpioName in1Name, BlackLib::gpioName in2Name, BlackLi
 
 void DCMotor::changePeriod(int ns)
 {
+    this->period = ns;
     st->setPeriodTime(ns);
 }
 
@@ -30,6 +31,7 @@ void DCMotor::changeOffset(float percentage)
 
 void DCMotor::changeDuty(float percentage)
 {
+    this->duty = percentage;
     st->setDutyPercent(this->offset/100.0 * percentage);
 }
 
