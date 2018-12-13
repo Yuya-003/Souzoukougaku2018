@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include <BlackGPIO/BlackGPIO.h>
 #include <BlackPWM/BlackPWM.h>
@@ -16,6 +17,11 @@ public:
     void changePeriod(int ns);
     void changeDuty(float percentage);
     void changeMode(Mode mode);
+
+    int getPeriod(){return period;}
+    float getDuty(){return duty;}
+    Mode getMode(){return mode;}
+    string getModeStr();
 
 private:
     std::shared_ptr<BlackLib::BlackGPIO> in1, in2;
