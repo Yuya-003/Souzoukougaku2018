@@ -47,3 +47,10 @@ void DCMotor::changeMode(Mode mode)
         break;
     }
 }
+
+string DCMotor::getModeStr()
+{
+    if(mode == Mode::forward){return "Forward";}
+    if(mode == Mode::backward){return "Backward";}
+    if(mode == Mode::stop){return "Stop";}
+}
