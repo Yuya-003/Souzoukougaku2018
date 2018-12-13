@@ -20,6 +20,7 @@ public:
     void changeMode(Mode mode);
 
     int getPeriod(){return period;}
+    float getOffset(){return offset;}
     float getDuty(){return duty;}
     Mode getMode(){return mode;}
     std::string getModeStr();
