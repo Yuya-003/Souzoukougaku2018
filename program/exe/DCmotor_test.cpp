@@ -20,7 +20,6 @@ int kbhit(void); //キー入力関数
 
 int main()
 {
-    constexpr int MaxPeriod = 10000000;
     constexpr BlackLib::gpioName MotorGpioName[2][2] = { {BlackLib::GPIO_61, BlackLib::GPIO_60},
     									  			   	 {BlackLib::GPIO_65, BlackLib::GPIO_46} };
     constexpr BlackLib::pwmName MotorPwmName[2] = {BlackLib::P9_14, BlackLib::P9_22};
@@ -38,13 +37,13 @@ int main()
                  "============================================================================\n"
                  "= < L >                                                                    =\n"
                  "=    Mode   :                                                              =\n"
-                 "=    Period :                                                              =\n"
+                 "=    Offset :                                                              =\n"
                  "=    Rate   :《                                                  》        =\n"
                  "=                                                                          =\n"
                  "============================================================================\n"
                  "= < R >                                                                    =\n"
                  "=    Mode   :                                                              =\n"
-                 "=    Period :                                                              =\n"
+                 "=    Offset :                                                              =\n"
                  "=    Rate   :《                                                  》        =\n"
                  "=                                                                          =\n"
                  "============================================================================\n"
@@ -53,8 +52,8 @@ int main()
                  "=     's' : mode 'Forward'            |     'j' : mode 'Forward'           =\n"
                  "=     'd' : mode 'Stop'               |     'k' : mode 'Stop'              =\n"
                  "=     'f' : mode 'Backward            |     'l' : mode 'Backward           =\n"
-                 "=     '@' : period increase           |     '[' : periodincrease           =\n"
-                 "=     ':' : period decrease           |     ']' : period decrease          =\n"
+                 "=     '@' : offset increase           |     '[' : offset increase          =\n"
+                 "=     ':' : offset decrease           |     ']' : offset decrease          =\n"
                  "=     't' : duty rate increase        |     'y' : duty rate increase       =\n"
                  "=     'g' : duty rate decrease        |     'h' : duty rate decrease       =\n"
                  "============================================================================\n";
@@ -79,15 +78,15 @@ int main()
                     leftMotor.changeMode(DCMotor::backward);
                     break;
 
-                case '@': //(L) period increase
-                    if(leftMotor.getPeriod() < MaxPeriod){
-                        leftMotor.changePeriod(leftMotor.getPeriod() + 1);
+                case '@': //(L) offset increase
+                    if(leftMotor.getOffset() < 100.0){
+                        leftMotor.changeOffset(leftMotor.getOffset() + 1);
                     }
                     break;
 
-                case ':': //(L) period decrease
-                    if(leftMotor.getPeriod() > 0){
-                        leftMotor.changePeriod(leftMotor.getPeriod() - 1);
+                case ':': //(L) offset decrease
+                    if(leftMotor.getOffset() > 0){
+                        leftMotor.changeOffset(leftMotor.getOffset() - 1);
                     }
                     break;
 
@@ -115,15 +114,15 @@ int main()
                     rightMotor.changeMode(DCMotor::backward);
                     break;
 
-                case '[': //(R) period increase
-                    if(rightMotor.getPeriod() < MaxPeriod){
-                        rightMotor.changePeriod(rightMotor.getPeriod() + 1);
+                case '[': //(R) offset increase
+                    if(rightMotor.getOffset() < 100.0){
+                        rightMotor.changeOffset(rightMotor.getOffset() + 1);
                     }
                     break;
 
-                case ']': //(R) period decrease
-                    if(rightMotor.getPeriod() > 0){
-                        rightMotor.changePeriod(rightMotor.getPeriod() - 1);
+                case ']': //(R) offset decrease
+                    if(rightMotor.getOffset() > 0){
+                        rightMotor.changeOffset(rightMotor.getOffset() - 1);
                     }
                     break;
 
@@ -156,8 +155,8 @@ int main()
         Console::SetCursorPos(15, 7);
         std::cout << leftMotor.getModeStr() << "          ";
         Console::MoveCursorPos(-(leftMotor.getModeStr().size() + 10), 1);
-        std::cout << leftMotor.getPeriod();
-        Console::MoveCursorPos(-7, 1);
+        std::cout << std::setw(3) << leftMotor.getOffset() << "%";
+        Console::MoveCursorPos(-3, 1);
         for(int i = 1; i <= 50; i++){
             if(leftMotor.getDuty()/(i*2) >= 1){
                 std::cout << "█";
@@ -173,8 +172,8 @@ int main()
         Console::MoveCursorPos(-57, 4);
         std::cout << rightMotor.getModeStr() << "          ";
         Console::MoveCursorPos(-(rightMotor.getModeStr().size() + 10), 1);
-        std::cout << rightMotor.getPeriod();
-        Console::MoveCursorPos(-7, 1);
+        std::cout << std::setw(3) << rightMotor.getOffset() << "%";
+        Console::MoveCursorPos(-3, 1);
         for(int i = 1; i <= 50; i++){
             if(rightMotor.getDuty()/(i*2) >= 1){
                 std::cout << "█";
