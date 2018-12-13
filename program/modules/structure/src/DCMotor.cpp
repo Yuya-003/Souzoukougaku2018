@@ -30,7 +30,7 @@ void DCMotor::changeOffset(float percentage)
 
 void DCMotor::changeDuty(float percentage)
 {
-    st->setDutyPercent(percentage / this->offset);
+    st->setDutyPercent(this->offset/100.0 * percentage);
 }
 
 void DCMotor::changeMode(Mode mode)
