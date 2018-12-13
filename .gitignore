@@ -1,3 +1,8 @@
 **/.vs/*
 **/build/*
 **/.vscode/*
+send_program.ps1
+send_modules.ps1
+connect_BBB.sh
+connect_BBB.ps1
+send_exe.ps1
