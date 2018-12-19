@@ -38,26 +38,26 @@ int main()
                  "= < L >                                                                    =\n"
                  "=    Mode   :                                                              =\n"
                  "=    Offset :                                                              =\n"
-                 "=    Rate   :《                                                  》        =\n"
+                 "=    Rate   : {                                                  }    %    =\n"
                  "=                                                                          =\n"
                  "============================================================================\n"
                  "= < R >                                                                    =\n"
                  "=    Mode   :                                                              =\n"
                  "=    Offset :                                                              =\n"
-                 "=    Rate   :《                                                  》        =\n"
+                 "=    Rate   : {                                                  }    %    =\n"
                  "=                                                                          =\n"
                  "============================================================================\n"
                  "= < key description >                                                      =\n"
                  "=   (L)                               |   (R)                              =\n"
-                 "=     's' : mode 'Forward'            |     'j' : mode 'Forward'           =\n"
-                 "=     'd' : mode 'Stop'               |     'k' : mode 'Stop'              =\n"
-                 "=     'f' : mode 'Backward            |     'l' : mode 'Backward           =\n"
+                 "=     'r' : mode 'Forward'            |     'u' : mode 'Forward'           =\n"
+                 "=     'f' : mode 'Stop'               |     'j' : mode 'Stop'              =\n"
+                 "=     'v' : mode 'Backward            |     'm' : mode 'Backward           =\n"
                  "=     '@' : offset increase           |     '[' : offset increase          =\n"
                  "=     ':' : offset decrease           |     ']' : offset decrease          =\n"
                  "=     't' : duty rate increase        |     'y' : duty rate increase       =\n"
                  "=     'g' : duty rate decrease        |     'h' : duty rate decrease       =\n"
                  "============================================================================\n";
-    //《███    》
+    //{███    }
     
     bool doesLoop = true;
     while(true){
@@ -66,15 +66,15 @@ int main()
         
         if(kbhit()){
             switch(getchar()){
-                case 's': //(L) status 'Forward'
+                case 'r': //(L) status 'Forward'
                     leftMotor.changeMode(DCMotor::forward);
                     break;
 
-                case 'd': //(L) status 'Stop'
+                case 'f': //(L) status 'Stop'
                     leftMotor.changeMode(DCMotor::stop);
                     break;
 
-                case 'f': //(L) status 'Backward 
+                case 'v': //(L) status 'Backward 
                     leftMotor.changeMode(DCMotor::backward);
                     break;
 
@@ -102,15 +102,15 @@ int main()
                     }
                     break;
 
-                case 'j': //(R) status 'Forward'
+                case 'u': //(R) status 'Forward'
                     rightMotor.changeMode(DCMotor::forward);
                     break;
 
-                case 'k': //(R) status 'Stop'
+                case 'j': //(R) status 'Stop'
                     rightMotor.changeMode(DCMotor::stop);
                     break;
 
-                case 'l': //(R) status 'Backward 
+                case 'm': //(R) status 'Backward 
                     rightMotor.changeMode(DCMotor::backward);
                     break;
 
@@ -166,10 +166,10 @@ int main()
             }
         }
         Console::MoveCursorPos(2, 0);
-        std::cout << std::setw(3) << leftMotor.getDuty() << "%";
+        std::cout << std::setw(3) << leftMotor.getDuty();
 
         //R
-        Console::MoveCursorPos(-57, 4);
+        Console::MoveCursorPos(-56, 4);
         std::cout << rightMotor.getModeStr() << "          ";
         Console::MoveCursorPos(-(rightMotor.getModeStr().size() + 10), 1);
         std::cout << std::setw(3) << rightMotor.getOffset() << "%";
@@ -183,8 +183,9 @@ int main()
             }
         }
         Console::MoveCursorPos(2, 0);
-        std::cout << std::setw(3) << rightMotor.getDuty() << "%";
+        std::cout << std::setw(3) << rightMotor.getDuty();
 
+        WaitTime(10);
     }
 
     
