@@ -7,7 +7,7 @@ LineTracer::LineTracer(std::vector<Blacklib::gpioName> pins)
     }
 }
 
-bool checkLine(int flag)
+bool LineTracer::checkLine(int flag)
 {
     int tmpFlag = 0;
     for(int i = 0; i < this->sensors.size(); i++){
