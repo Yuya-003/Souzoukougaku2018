@@ -16,7 +16,8 @@
 #include <util/Timer.hpp>
 #include <structure/DCMotor.h>
 
-int kbhit(void); //キー入力関数
+bool kbhit(); //キー入力関数
+void printConsole(DCMotor rightMotor, DCMotor leftMotor);
 
 int main()
 {
@@ -57,15 +58,15 @@ int main()
                  "=     't' : duty rate increase        |     'y' : duty rate increase       =\n"
                  "=     'g' : duty rate decrease        |     'h' : duty rate decrease       =\n"
                  "============================================================================\n";
-    //{███    }
+    printConsole(rightMotor, leftMotor);
     
     bool doesLoop = true;
     while(true){
-
-        Console::SetCursorPos(0, 28);
         
+        static int key;
         if(kbhit()){
-            switch(getchar()){
+            key = getchar();
+            switch(key){
                 case 'r': //(L) status 'Forward'
                     leftMotor.changeMode(DCMotor::forward);
                     break;
@@ -146,44 +147,11 @@ int main()
                     break;
                     
             }
+            
+            printConsole(rightMotor, leftMotor);
         }
 
         if(!doesLoop) break;
-
-        //画面表示
-        //L
-        Console::SetCursorPos(15, 7);
-        std::cout << leftMotor.getModeStr() << "          ";
-        Console::MoveCursorPos(-(leftMotor.getModeStr().size() + 10), 1);
-        std::cout << std::setw(3) << leftMotor.getOffset() << "%";
-        Console::MoveCursorPos(-3, 1);
-        for(int i = 1; i <= 50; i++){
-            if(leftMotor.getDuty()/(i*2) >= 1){
-                std::cout << "█";
-            }
-            else{
-                std::cout << " ";
-            }
-        }
-        Console::MoveCursorPos(2, 0);
-        std::cout << std::setw(3) << leftMotor.getDuty();
-
-        //R
-        Console::MoveCursorPos(-56, 4);
-        std::cout << rightMotor.getModeStr() << "          ";
-        Console::MoveCursorPos(-(rightMotor.getModeStr().size() + 10), 1);
-        std::cout << std::setw(3) << rightMotor.getOffset() << "%";
-        Console::MoveCursorPos(-3, 1);
-        for(int i = 1; i <= 50; i++){
-            if(rightMotor.getDuty()/(i*2) >= 1){
-                std::cout << "█";
-            }
-            else{
-                std::cout << " ";
-            }
-        }
-        Console::MoveCursorPos(2, 0);
-        std::cout << std::setw(3) << rightMotor.getDuty();
 
         WaitTime(10);
     }
@@ -193,7 +161,7 @@ int main()
     return 0;
 }
 
-int kbhit(void){
+bool kbhit(){
     struct termios oldt, newt;
     int ch;
     int oldf;
@@ -212,8 +180,48 @@ int kbhit(void){
 
     if (ch != EOF) {
         ungetc(ch, stdin);
-        return 1;
+        return true;
     }
 
-    return 0;
+    return false;
+}
+
+void printConsole(DCMotor rightMotor, DCMotor leftMotor)
+{
+    //L
+    Console::SetCursorPos(15, 7);
+    std::cout << leftMotor.getModeStr() << "          ";
+    Console::MoveCursorPos(-(leftMotor.getModeStr().size() + 10), 1);
+    std::cout << std::setw(3) << leftMotor.getOffset() << "%";
+    Console::MoveCursorPos(-3, 1);
+    for(int i = 1; i <= 50; i++){
+        if(leftMotor.getDuty()/(i*2) >= 1){
+            std::cout << "█";
+        }
+        else{
+            std::cout << " ";
+        }
+    }
+    Console::MoveCursorPos(2, 0);
+    std::cout << std::setw(3) << leftMotor.getDuty();
+
+    //R
+    Console::MoveCursorPos(-56, 4);
+    std::cout << rightMotor.getModeStr() << "          ";
+    Console::MoveCursorPos(-(rightMotor.getModeStr().size() + 10), 1);
+    std::cout << std::setw(3) << rightMotor.getOffset() << "%";
+    Console::MoveCursorPos(-3, 1);
+    for(int i = 1; i <= 50; i++){
+        if(rightMotor.getDuty()/(i*2) >= 1){
+            std::cout << "█";
+        }
+        else{
+            std::cout << " ";
+        }
+    }
+    Console::MoveCursorPos(2, 0);
+    std::cout << std::setw(3) << rightMotor.getDuty();
+
+    Console::SetCursorPos(0, 28);
+
 }

@@ -20,8 +20,8 @@ int main()
                                                          {BlackLib::GPIO_65, BlackLib::GPIO_46} };
     constexpr BlackLib::pwmName MotorPwmName[2] = {BlackLib::P9_14, BlackLib::P9_22};
 
-    constexpr float rightOffset = 29.0;
-    constexpr float leftOffset = 25.0;
+    constexpr float rightOffset = 67.0;
+    constexpr float leftOffset = 60.0;
 
     DCMotor rightMotor(MotorGpioName[0][0], MotorGpioName[0][1], MotorPwmName[0]);
     DCMotor leftMotor (MotorGpioName[1][0], MotorGpioName[1][1], MotorPwmName[1]);
@@ -31,13 +31,10 @@ int main()
 
     std::cout << "Start" << std::endl; 
     WaitTime(3000);
-    rightMotor.changeDuty(100);
-    leftMotor.changeDuty(100);
-    rightMotor.changeMode(DCMotor::forward);
-    leftMotor.changeMode(DCMotor::forward);
-    WaitTime(500);
     rightMotor.changeDuty(60);
     leftMotor.changeDuty(60);
+    rightMotor.changeMode(DCMotor::forward);
+    leftMotor.changeMode(DCMotor::forward);
     WaitTime(3000);
     std::cout << "End" << std::endl;
     
