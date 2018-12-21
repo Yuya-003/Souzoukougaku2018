@@ -1,7 +1,6 @@
 #pragma once 
 
 #include <cmath>
-#include <array>
 #include <vector>
 
 #include <BlackGPIO/BlackGPIO.h>
@@ -12,7 +11,7 @@ public:
         no1 = 1, no2 = 2, no3 = 4, no4 = 8, no5 = 16, no6 = 32
     };
 
-    LineTracer(std::array<BlackLib::gpioName> pins);
+    LineTracer(std::vector<BlackLib::gpioName> pins);
     bool checkLine(int flag);
 
 private:

@@ -1,6 +1,6 @@
 #include "LineTracer.h"
 
-LineTracer::LineTracer(std::array<Blacklib::gpioName> pins)
+LineTracer::LineTracer(std::vector<Blacklib::gpioName> pins)
 {
     for(auto pin : pins){
         this->sensors.push_back(BlackLib::BlackGPIO(pin, BlackLib::input));
