@@ -7,14 +7,12 @@ LineTracer::LineTracer(std::vector<Blacklib::gpioName> pins)
     }
 }
 
-bool LineTracer::checkLine(int flag)
+int LineTracer::getLineState()
 {
-    int tmpFlag = 0;
+    int flag = 0;
     for(int i = 0; i < this->sensors.size(); i++){
-        if(sensors[i].getNumericValue() == 1){
-            tmpFlag |= pow(2, i);
-        }
+        flag <<= 1
+        flag += sensors[i].getNumericValue();
     }
-
-    return (flag == tempFlag);
+    return flag;
 }

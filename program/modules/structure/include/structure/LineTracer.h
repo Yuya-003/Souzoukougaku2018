@@ -12,7 +12,7 @@ public:
     };
 
     LineTracer(std::vector<BlackLib::gpioName> pins);
-    bool checkLine(int flag);
+    int getLineState();
 
 private:
     std::vector<BlackLib::BlackGPIO> sensors;
