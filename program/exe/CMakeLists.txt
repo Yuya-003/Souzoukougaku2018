@@ -10,6 +10,12 @@ target_link_libraries(DCMotorTest structure)
 target_link_libraries(DCMotorTest BlackLib)
 message(STATUS "  DCMotorTest")
 
+add_executable(LineTracerTest line_tracer_test.cpp)
+target_link_libraries(LineTracerTest util)
+target_link_libraries(LineTracerTest structure)
+target_link_libraries(LineTracerTest BlackLib)
+message(STATUS "  LineTracerTest")
+
 add_executable(TestRun test_run.cpp)
 target_link_libraries(TestRun util)
 target_link_libraries(TestRun structure)

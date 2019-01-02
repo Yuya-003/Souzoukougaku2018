@@ -1,0 +1,96 @@
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
+
+#include <cmath>
+#include <iostream>
+#include <vector>
+#include <exception>
+
+#include <structure/LineTracer.h>
+#include <util/Console.h>
+#include <util/Timer.hpp>
+
+bool kbhit();
+
+int main()
+{
+    try{
+        const std::vector<BlackLib::gpioName> pins = { BlackLib::GPIO_30,
+                                                        BlackLib::GPIO_48,
+                                                        BlackLib::GPIO_3,
+                                                        BlackLib::GPIO_49,
+                                                        BlackLib::GPIO_125,
+                                                        BlackLib::GPIO_27  };
+
+        LineTracer tracer(pins);
+
+        Console::ClearScreen(1);
+        std::cout << "========================\n"
+                     "=                      =\n"
+                     "=   Line Tracer Test   =\n"
+                     "=                      =\n"
+                     "========================\n"
+                     "=                      =\n"
+                     "=   1  2  3  4  5  6   =\n"
+                     "=                      =\n"
+                     "=                      =\n"
+                     "========================\n";
+
+        bool doesLoop = true;
+        int flags = 0;
+        while(doesLoop){
+            
+            if(kbhit()){
+                if(getchar() == 'q'){
+                    doesLoop = false;
+                }
+            }
+
+            flags = tracer.getLineState();
+
+            Console::SetCursorPos(5, 8);
+            for(int i = 0; i < tracer.size(); i++){
+                if((flags & pow(2, i)) != 0){
+                    std::cout << "■ ";
+                }
+                else{
+                    std::cout << "□ ";
+                }
+            }
+            Console::MoveCursorPos(-22, 3);
+
+            WaitTime(10);
+        }
+    }
+    catch(std::exception &e){
+        std::cout << e.what() << std::endl;
+    }
+
+    return 0;
+}
+
+bool kbhit(){
+    struct termios oldt, newt;
+    int ch;
+    int oldf;
+
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+
+    ch = getchar();
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    fcntl(STDIN_FILENO, F_SETFL, oldf);
+
+    if (ch != EOF) {
+        ungetc(ch, stdin);
+        return true;
+    }
+
+    return false;
+}
