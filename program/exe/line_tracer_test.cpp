@@ -51,7 +51,7 @@ int main()
 
             Console::SetCursorPos(5, 8);
             for(int i = 0; i < tracer.size(); i++){
-                if((flags & pow(2, i)) != 0){
+                if((flags & static_cast<int>(pow(2, i))) != 0){
                     std::cout << "■ ";
                 }
                 else{
