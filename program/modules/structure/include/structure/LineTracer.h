@@ -13,6 +13,7 @@ public:
 
     LineTracer(std::vector<BlackLib::gpioName> pins);
     int getLineState();
+    unsigned int size();
 
 private:
     std::vector<BlackLib::BlackGPIO> sensors;
