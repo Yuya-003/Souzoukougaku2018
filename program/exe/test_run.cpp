@@ -10,7 +10,7 @@
 
 //project headers
 #include <util/Timer.hpp>
-#include <structure/DCMotor.h>
+#include <structure/dc_motor.h>
 
 int kbhit(void); //キー入力関数
 

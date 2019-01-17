@@ -7,7 +7,7 @@
 #include <vector>
 #include <exception>
 
-#include <structure/LineTracer.h>
+#include <structure/line_tracer.h>
 #include <util/Console.h>
 #include <util/Timer.hpp>
 
@@ -20,19 +20,19 @@ int main()
                                                         BlackLib::GPIO_48,
                                                         BlackLib::GPIO_3,
                                                         BlackLib::GPIO_49,
-                                                        BlackLib::GPIO_125,
+                                                        BlackLib::GPIO_115,
                                                         BlackLib::GPIO_27  };
 
         LineTracer tracer(pins);
 
         Console::ClearScreen(1);
+        Console::SetCursorPos(0,0);
         std::cout << "========================\n"
                      "=                      =\n"
                      "=   Line Tracer Test   =\n"
                      "=                      =\n"
                      "========================\n"
                      "=                      =\n"
-                     "=   1  2  3  4  5  6   =\n"
                      "=                      =\n"
                      "=                      =\n"
                      "========================\n";
@@ -49,13 +49,13 @@ int main()
 
             flags = tracer.getLineState();
 
-            Console::SetCursorPos(5, 8);
+            Console::SetCursorPos(5, 7);
             for(int i = 0; i < tracer.size(); i++){
                 if((flags & static_cast<int>(pow(2, i))) != 0){
-                    std::cout << "■ ";
+                    std::cout << 1 << "  ";
                 }
                 else{
-                    std::cout << "□ ";
+                    std::cout << 0 << "  ";
                 }
             }
             Console::MoveCursorPos(-22, 3);

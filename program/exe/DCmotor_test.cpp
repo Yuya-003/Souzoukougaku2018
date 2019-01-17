@@ -14,7 +14,7 @@
 //project headers
 #include <util/Console.h>
 #include <util/Timer.hpp>
-#include <structure/DCMotor.h>
+#include <structure/dc_motor.h>
 
 bool kbhit(); //キー入力関数
 void printConsole(DCMotor rightMotor, DCMotor leftMotor);
