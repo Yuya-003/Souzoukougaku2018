@@ -3,7 +3,7 @@
 LineTracer::LineTracer(std::vector<BlackLib::gpioName> pins)
 {
     for(auto pin : pins){
-        this->sensors.push_back(BlackLib::BlackGPIO(pin, BlackLib::input));
+        this->sensors.push_back(std::make_shared<BlackLib::BlackGPIO>(pin, BlackLib::input));
     }
 }
 
@@ -12,7 +12,7 @@ int LineTracer::getLineState()
     int flag = 0;
     for(int i = 0; i < this->sensors.size(); i++){
         flag <<= 1;
-        flag += sensors[i].getNumericValue();
+        flag += sensors[i]->getNumericValue();
     }
     return flag;
 }

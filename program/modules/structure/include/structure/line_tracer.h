@@ -1,5 +1,6 @@
 #pragma once 
 
+#include <memory>
 #include <vector>
 
 #include <BlackGPIO/BlackGPIO.h>
@@ -15,5 +16,5 @@ public:
     unsigned int size();
 
 private:
-    std::vector<BlackLib::BlackGPIO> sensors;
+    std::vector<std::shared_ptr<BlackLib::BlackGPIO>> sensors;
 };
