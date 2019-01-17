@@ -1,4 +1,4 @@
-#include "LineTracer.h"
+#include "line_tracer.h"
 
 LineTracer::LineTracer(std::vector<BlackLib::gpioName> pins)
 {
