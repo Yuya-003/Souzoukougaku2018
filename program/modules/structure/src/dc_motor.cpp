@@ -1,4 +1,4 @@
-#include "DCMotor.h"
+#include "dc_motor.h"
 
 DCMotor::DCMotor(BlackLib::gpioName in1Name, BlackLib::gpioName in2Name, BlackLib::pwmName stName)
 {
