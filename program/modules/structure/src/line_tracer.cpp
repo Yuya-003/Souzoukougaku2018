@@ -10,7 +10,7 @@ LineTracer::LineTracer(std::vector<BlackLib::gpioName> pins)
 int LineTracer::getLineState()
 {
     int flag = 0;
-    for(int i = 0; i < this->sensors.size(); i++){
+    for(int i = this->sensors.size() - 1; i >= 0; i--){
         flag <<= 1;
         flag += sensors[i]->getNumericValue();
     }
