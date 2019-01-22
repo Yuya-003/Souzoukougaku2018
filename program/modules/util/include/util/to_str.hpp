@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sstream>
+#include <ofstream>
 #include <string>
 
 template <typename T>
