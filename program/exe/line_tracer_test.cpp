@@ -11,12 +11,11 @@
 #include <util/Console.h>
 #include <util/Timer.hpp>
 
-bool kbhit();
 
 int main()
 {
     try{
-        const std::vector<BlackLib::gpioName> pins = { BlackLib::GPIO_30,
+        const std::vector<BlackLib::gpioName> pins = {  BlackLib::GPIO_30,
                                                         BlackLib::GPIO_48,
                                                         BlackLib::GPIO_3,
                                                         BlackLib::GPIO_49,
@@ -41,7 +40,7 @@ int main()
         int flags = 0;
         while(doesLoop){
             
-            if(kbhit()){
+            if(Console::kbhit()){
                 if(getchar() == 'q'){
                     doesLoop = false;
                 }
@@ -70,27 +69,3 @@ int main()
     return 0;
 }
 
-bool kbhit(){
-    struct termios oldt, newt;
-    int ch;
-    int oldf;
-
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
-
-    ch = getchar();
-
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    fcntl(STDIN_FILENO, F_SETFL, oldf);
-
-    if (ch != EOF) {
-        ungetc(ch, stdin);
-        return true;
-    }
-
-    return false;
-}

@@ -12,7 +12,6 @@
 #include <util/Timer.hpp>
 #include <structure/dc_motor.h>
 
-int kbhit(void); //キー入力関数
 
 int main()
 {

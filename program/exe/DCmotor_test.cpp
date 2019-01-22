@@ -16,7 +16,6 @@
 #include <util/Timer.hpp>
 #include <structure/dc_motor.h>
 
-bool kbhit(); //キー入力関数
 void printConsole(DCMotor rightMotor, DCMotor leftMotor);
 
 int main()
@@ -64,7 +63,7 @@ int main()
     while(true){
         
         static int key;
-        if(kbhit()){
+        if(Console::kbhit()){
             key = getchar();
             switch(key){
                 case 'r': //(L) status 'Forward'
@@ -159,31 +158,6 @@ int main()
     
 
     return 0;
-}
-
-bool kbhit(){
-    struct termios oldt, newt;
-    int ch;
-    int oldf;
-
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
-
-    ch = getchar();
-
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    fcntl(STDIN_FILENO, F_SETFL, oldf);
-
-    if (ch != EOF) {
-        ungetc(ch, stdin);
-        return true;
-    }
-
-    return false;
 }
 
 void printConsole(DCMotor rightMotor, DCMotor leftMotor)
