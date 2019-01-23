@@ -8,28 +8,30 @@
 
 int main()
 {
-	BlackGPIO sensor(BlackLib::GPIO_47, BlackLib::input);
-	//BlackGPIO sensor(BlackLib::GPIO_45, BlackLib::input);
+	//BlackLib::BlackGPIO sensor(BlackLib::GPIO_47, BlackLib::input);
+	BlackLib::BlackGPIO sensor(BlackLib::GPIO_45, BlackLib::input);
+	
 	Timer timer;
 
 	std::cout << "   Ultrasonic Sensor Test   " << std::endl;
-	bool canLoop = true;
 	double distance = 0;
-	while(canLoop){
+	while(true){
 
 		if(Console::kbhit()){
 			if(getchar() == 'q'){
-				canLoop = false;
+				break;
 			}
 		}
 
+		while(sensor.isHigh());
 		while(!sensor.isHigh());
 		timer.start();
 		while(sensor.isHigh());
 		timer.stop();
 
 		distance = 340.0 * 100 * timer.getElapsedTime() * 1E-9 / 2;
-		std::cout << "distance : " << distance << "[cm]" << std:endl;
+		std::cout << "distance : " << distance << "[cm]" << std::endl;
+		Timer::waitTime(1000);
 	}
 
 	return 0;

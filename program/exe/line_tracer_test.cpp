@@ -15,12 +15,12 @@
 int main()
 {
     try{
-        const std::vector<BlackLib::gpioName> pins = {  BlackLib::GPIO_30,
-                                                        BlackLib::GPIO_48,
-                                                        BlackLib::GPIO_3,
-                                                        BlackLib::GPIO_49,
+        const std::vector<BlackLib::gpioName> pins = {  BlackLib::GPIO_27,
                                                         BlackLib::GPIO_115,
-                                                        BlackLib::GPIO_27  };
+                                                        BlackLib::GPIO_49,
+                                                        BlackLib::GPIO_3,
+                                                        BlackLib::GPIO_48,
+                                                        BlackLib::GPIO_30  };
 
         LineTracer tracer(pins);
 
