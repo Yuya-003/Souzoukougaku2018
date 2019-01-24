@@ -7,7 +7,7 @@
 #include <vector>
 #include <exception>
 
-#include <structure/line_sensro.h>
+#include <structure/line_sensor.h>
 #include <util/Console.h>
 #include <util/Timer.hpp>
 

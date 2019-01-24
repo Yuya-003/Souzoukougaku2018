@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include <structure/dc_motor.h>
 
@@ -14,7 +15,7 @@ struct MotorStatus{
 
 class DriveMotor{
 private:
-    DCMotor right, left;
+    std::shared_ptr<DCMotor> right, left;
 
 public:
     DriveMotor(DCMotorPins leftPins, DCMotorPins rightPins);
