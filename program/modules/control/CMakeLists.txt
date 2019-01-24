@@ -1,5 +1,5 @@
 # ライブラリ追加
-file(GLOB STRUCTURE_SOURCES src/*.cpp include/control/*.h include/control/*.hpp)
+file(GLOB CONTROL_SOURCES src/*.cpp include/control/*.h include/control/*.hpp)
 add_library(control ${CONTROL_SOURCES})
 
 # インクルードディレクトリ追加

@@ -1,0 +1,25 @@
+#pragma once
+
+#include <string>
+
+#include <structure/dc_motor.h>
+
+struct MotorStatus{
+    std::string mode;
+    double speed;
+    double offset;
+
+    MotorStatus(std::string _mode, double _speed, double _offset) : mode(_mode), speed(_speed), offset(_offset){}
+};
+
+class DriveMotor{
+private:
+    DCMotor right, left;
+
+public:
+    DriveMotor(DCMotorPins leftPins, DCMotorPins rightPins);
+    void setSpeed(double leftSpeed, double rightSpeed);
+    void setOffset(double leftOffset, double rightOffset);
+    MotorStatus getLeftStatus();
+    MotorStatus getRightStatus();
+};
