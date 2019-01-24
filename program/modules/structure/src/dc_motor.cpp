@@ -1,11 +1,11 @@
 #include "dc_motor.h"
 
-DCMotor::DCMotor(BlackLib::gpioName in1Name, BlackLib::gpioName in2Name, BlackLib::pwmName stName)
+DCMotor::DCMotor(DCMotorPins pins)
 {
     //初期化
-    in1 = std::make_shared<BlackLib::BlackGPIO>(in1Name, BlackLib::output);
-    in2 = std::make_shared<BlackLib::BlackGPIO>(in2Name, BlackLib::output);
-    st = std::make_shared<BlackLib::BlackPWM>(stName);
+    in1 = std::make_shared<BlackLib::BlackGPIO>(pins.in1, BlackLib::output);
+    in2 = std::make_shared<BlackLib::BlackGPIO>(pins.in2, BlackLib::output);
+    st = std::make_shared<BlackLib::BlackPWM>(pins.st);
 
     //値のセット
     st->setPeriodTime(this->period);
