@@ -7,7 +7,7 @@
 #include <vector>
 #include <exception>
 
-#include <structure/line_tracer.h>
+#include <structure/line_sensro.h>
 #include <util/Console.h>
 #include <util/Timer.hpp>
 
@@ -22,13 +22,13 @@ int main()
                                                         BlackLib::GPIO_48,
                                                         BlackLib::GPIO_30  };
 
-        LineTracer tracer(pins);
+        LineSensor tracer(pins);
 
         Console::ClearScreen(1);
         Console::SetCursorPos(0,0);
         std::cout << "========================\n"
                      "=                      =\n"
-                     "=   Line Tracer Test   =\n"
+                     "=   Line Sensor Test   =\n"
                      "=                      =\n"
                      "========================\n"
                      "=                      =\n"
