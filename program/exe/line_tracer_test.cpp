@@ -20,7 +20,7 @@ int main()
                                                         BlackLib::GPIO_49,
                                                         BlackLib::GPIO_3,
                                                         BlackLib::GPIO_48,
-                                                        BlackLib::GPIO_30  };
+                                                        BlackLib::GPIO_47  };
 
         LineSensor tracer(pins);
 
@@ -49,8 +49,10 @@ int main()
             flags = tracer.getLineState();
 
             Console::SetCursorPos(5, 7);
-            for(int i = 0; i < tracer.size(); i++){
-                if((flags & static_cast<int>(pow(2, i))) != 0){
+            for(unsigned int i = 0; i < tracer.size(); i++){
+                int tmpFlag = 1;
+                tmpFlag <<= tracer.size()-1-i;
+                if((flags & tmpFlag) != 0){
                     std::cout << 1 << "  ";
                 }
                 else{
