@@ -1,6 +1,6 @@
 #include "dc_motor.h"
 
-DCMotor::DCMotor(DCMotorPins pins)
+DCMotor::DCMotor(BBB::DCMotorPins pins)
 {
     //初期化
     in1 = std::make_shared<BlackLib::BlackGPIO>(pins.in1, BlackLib::output);

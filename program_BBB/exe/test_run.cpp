@@ -15,14 +15,11 @@
 
 int main()
 {
-    const DCMotorPins rightMotorPins(BlackLib::GPIO_61, BlackLib::GPIO_60, BlackLib::P9_14);
-    const DCMotorPins leftMotorPins(BlackLib::GPIO_65, BlackLib::GPIO_46, BlackLib::P9_22);
-
     constexpr float rightOffset = 67.0;
     constexpr float leftOffset = 60.0;
 
-    DCMotor rightMotor(rightMotorPins);
-    DCMotor leftMotor (leftMotorPins);
+    DCMotor rightMotor(BBB::RIGHT_MOTOR_PINS);
+    DCMotor leftMotor (BBB::LEFT_MOTOR_PINS);
 
     rightMotor.changeOffset(rightOffset);
     leftMotor.changeOffset(leftOffset);

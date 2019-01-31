@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <BlackGPIO/BlackGPIO.h>
+#include <structure/using_pins.h>
 
 class LineSensor{
 private:
@@ -11,7 +12,7 @@ private:
     bool doReverseSignal;
 
 public:
-    LineSensor(std::vector<BlackLib::gpioName> pins);
+    LineSensor(BBB::LineSensorPins pins);
     int getLineState();
     unsigned int size();
     void enableReverseSignal(bool flag);

@@ -1,6 +1,6 @@
 #include "drive_motor.h"
 
-DriveMotor::DriveMotor(DCMotorPins leftPins, DCMotorPins rightPins)
+DriveMotor::DriveMotor(BBB::DCMotorPins leftPins, BBB::DCMotorPins rightPins)
 {
     this->left = std::make_shared<DCMotor>(leftPins);
     this->right = std::make_shared<DCMotor>(rightPins);

@@ -15,14 +15,8 @@
 int main()
 {
     try{
-        const std::vector<BlackLib::gpioName> pins = {  BlackLib::GPIO_27,
-                                                        BlackLib::GPIO_115,
-                                                        BlackLib::GPIO_49,
-                                                        BlackLib::GPIO_3,
-                                                        BlackLib::GPIO_48,
-                                                        BlackLib::GPIO_47  };
 
-        LineSensor tracer(pins);
+        LineSensor tracer(BBB::LINE_SENSORS_PINS);
 
         Console::ClearScreen(1);
         Console::SetCursorPos(0,0);
