@@ -12,4 +12,5 @@ public:
         :drive_motor(left_pins, right_pins)
     {}
 
+    void setValueFromReceivedString(std::string received_str);
 };

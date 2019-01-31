@@ -26,4 +26,4 @@ namespace BBB{
                                                 BlackLib::GPIO_3,
                                                 BlackLib::GPIO_48,
                                                 BlackLib::GPIO_47  };
-    }
+}
