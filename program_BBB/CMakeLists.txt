@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
 
-project(Souzoukougaku2018 CXX)
+project(Souzoukougaku2018 CXX C)
 
 
 # in-sourceビルドの禁止
@@ -16,6 +16,9 @@ message(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
 
 # モジュール追加
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+
+# パッケージ検索
+find_package(Threads REQUIRED)
 
 # C++コンパイル設定
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")        # C++11を有効化

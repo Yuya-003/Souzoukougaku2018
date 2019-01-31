@@ -1,6 +1,6 @@
 #include <BlackGPIO/BlackGPIO.h>
 
-#include <util/timer.h>
+#include <util/Timer.h>
 #include <util/Console.h>
 
 #include <iostream>

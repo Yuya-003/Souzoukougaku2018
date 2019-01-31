@@ -13,7 +13,7 @@
 
 //project headers
 #include <util/Console.h>
-#include <util/Timer.hpp>
+#include <util/Timer.h>
 #include <structure/dc_motor.h>
 
 void printConsole(DCMotor rightMotor, DCMotor leftMotor);
@@ -152,7 +152,7 @@ int main()
 
         if(!doesLoop) break;
 
-        WaitTime(10);
+        Timer::waitTime(10);
     }
 
     

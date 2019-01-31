@@ -9,7 +9,7 @@
 
 #include <structure/line_sensor.h>
 #include <util/Console.h>
-#include <util/Timer.hpp>
+#include <util/Timer.h>
 
 
 int main()
@@ -61,7 +61,7 @@ int main()
             }
             Console::MoveCursorPos(-22, 3);
 
-            WaitTime(10);
+            Timer::waitTime(10);
         }
     }
     catch(std::exception &e){

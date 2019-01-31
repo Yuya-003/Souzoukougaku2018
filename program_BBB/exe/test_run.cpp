@@ -9,7 +9,7 @@
 //library headers
 
 //project headers
-#include <util/Timer.hpp>
+#include <util/Timer.h>
 #include <structure/dc_motor.h>
 
 
@@ -28,12 +28,12 @@ int main()
     leftMotor.changeOffset(leftOffset);
 
     std::cout << "Start" << std::endl; 
-    WaitTime(3000);
+    Timer::waitTime(3000);
     rightMotor.changeDuty(60);
     leftMotor.changeDuty(60);
     rightMotor.changeMode(DCMotor::forward);
     leftMotor.changeMode(DCMotor::forward);
-    WaitTime(3000);
+    Timer::waitTime(3000);
     std::cout << "End" << std::endl;
     
     return 0;

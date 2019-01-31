@@ -1,4 +1,4 @@
-#include "timer.h"
+#include "Timer.h"
 
 void Timer::waitTime(int ms){
     auto begin = std::chrono::system_clock::now();
