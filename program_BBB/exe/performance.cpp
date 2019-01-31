@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include <structure/using_pins.h>
 #include <structure/socket_server.h>
 #include <structure/sensors_manager.h>
 #include <actuators_manager.h>
