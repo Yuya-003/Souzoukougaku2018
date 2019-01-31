@@ -7,7 +7,7 @@
 class SocketServer{
 private:
     boost::asio::io_service io_service;
-    boost::asio::ip::tcp::socket sock;
+    boost::asio::ip::tcp::socket &sock;
 
     u_short port;
 

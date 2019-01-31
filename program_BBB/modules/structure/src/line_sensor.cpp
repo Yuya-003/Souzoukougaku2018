@@ -1,6 +1,6 @@
 #include "line_sensor.h"
 
-LineSensor::LineSensor(std::vector<BlackLib::gpioName> pins)
+LineSensor::LineSensor(BBB::LineSensorPins pins)
 {
     for(auto pin : pins){
         this->sensors.push_back(std::make_shared<BlackLib::BlackGPIO>(pin, BlackLib::input));

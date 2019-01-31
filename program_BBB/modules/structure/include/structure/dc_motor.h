@@ -5,13 +5,7 @@
 
 #include <BlackGPIO/BlackGPIO.h>
 #include <BlackPWM/BlackPWM.h>
-
-struct DCMotorPins{
-    BlackLib::gpioName in1, in2;
-    BlackLib::pwmName st;
-
-    DCMotorPins(BlackLib::gpioName _in1, BlackLib::gpioName _in2, BlackLib::pwmName _st) :in1(_in1), in2(_in2), st(_st){}
-};
+#include <structure/using_pins.h>
 
 class DCMotor{
 public:
@@ -19,7 +13,7 @@ public:
         forward, backward, stop
     };
 
-    DCMotor(DCMotorPins pins);
+    DCMotor(BBB::DCMotorPins pins);
 
     void changePeriod(int ns);
     void changeOffset(float percentage);
