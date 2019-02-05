@@ -38,4 +38,10 @@ add_executable(TcpTest tcp_test.cpp)
 target_link_libraries(TcpTest util)
 target_link_libraries(TcpTest structure)
 
+#add_executable(Performance performance.cpp)
+#target_link_libraries(Performance util)
+#target_link_libraries(Performance structure)
+#target_link_libraries(Performance BlackLib)
+#message(STATUS "  Performance")
+
 message(STATUS "  TcpTest")

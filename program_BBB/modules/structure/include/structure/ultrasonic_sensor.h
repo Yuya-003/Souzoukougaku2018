@@ -10,7 +10,7 @@ private:
     double distance;
     bool is_running;
     std::thread t;
-    BlackGPIO::BlackGPIO &sensor;
+    BlackLib::BlackGPIO sensor;
 
     void measureDistance();
     double convertFromNsToCm(double ns);
@@ -20,5 +20,5 @@ public:
     UltrasonicSensor(BlackLib::gpioName pin);
     ~UltrasonicSensor();
 
-    double getDistance();
+    double getDistance(); //cm
 };

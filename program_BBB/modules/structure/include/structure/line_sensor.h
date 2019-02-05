@@ -9,7 +9,7 @@
 class LineSensor{
 private:
     std::vector<std::shared_ptr<BlackLib::BlackGPIO>> sensors;
-    bool doReverseSignal;
+    bool is_reversed;
 
 public:
     LineSensor(BBB::LineSensorPins pins);

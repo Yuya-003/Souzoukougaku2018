@@ -6,8 +6,8 @@
 
 class SensorsManager{
 private:
-    LineSensor &line_sensor;
-    UltrasonicSensor &us_sensor_1, &us_sensor_2;
+    LineSensor line_sensor;
+    UltrasonicSensor us_sensor_1, us_sensor_2;
 
 public:
     SensorsManager() = delete;
@@ -15,5 +15,5 @@ public:
         : line_sensor(line_pins), us_sensor_1(us_pins_1), us_sensor_2(us_pins_2)
     {}
 
-    std::string getStringForSending();
+    std::string getStringForSending(); //line_state us1_state us2_state
 };

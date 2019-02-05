@@ -5,7 +5,7 @@
 
 class ServoMotor{
 private:
-    BlackLib::BlackPWM &pwm;
+    BlackLib::BlackPWM pwm;
     int period = 10000000;
     double dutyAt0Deg = 0.0;
     double dutyAt180Deg = 100.0;

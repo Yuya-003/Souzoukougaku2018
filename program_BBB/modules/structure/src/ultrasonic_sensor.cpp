@@ -1,6 +1,7 @@
 #include "ultrasonic_sensor.h"
 
 #include <chrono>
+#include <iostream>
 
 #include <util/timer.h>
 
@@ -9,7 +10,7 @@ UltrasonicSensor::UltrasonicSensor(BlackLib::gpioName pin)
 {
     this->is_running = true;
     this->distance = 0;
-    std::thread _t(&UltrasonicSensor::measureDistance(), this);
+    std::thread _t(&UltrasonicSensor::measureDistance, this);
     this->t.swap(_t);
 }
 
@@ -32,6 +33,8 @@ void UltrasonicSensor::measureDistance()
 
         this->distance = this->convertFromNsToCm(timer.getElapsedTime());
     }
+
+    std::cout << "measureDistance exit" << std::endl;
 }
 
 double UltrasonicSensor::convertFromNsToCm(double ns)
